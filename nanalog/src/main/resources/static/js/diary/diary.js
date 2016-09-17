@@ -77,9 +77,6 @@
         run: function() {}
     };
 
-    var testFnc = function() {
-        return '<div>abcd</div>';
-    }
 
     // 버튼 누를때 뿌려주는 데이터 체크
     function checkAjaxCallData(selectBarButtonValue) {
