@@ -1,0 +1,112 @@
+body> .grid {
+    height: 100%;
+}
+
+.column {
+    max-width: 450px;
+}
+
+#login-form {
+    position: relative;
+    width: 375px;
+    height: 535px;
+    border-radius: 5px;
+    box-shadow: 2px 4px 4px 0 rgba(193, 193, 193, 0.5);
+    border: solid 1px #979797 !important;
+}
+
+.join-form {
+    height: 750px;
+}
+
+.password-search-form {
+    height: 440px;
+}
+
+#login-form-logo {
+    margin-top: 55px;
+    margin-bottom: 60px;
+}
+
+.login-form-component {
+    margin-bottom: 30px !important;
+    margin-left: 37px !important;
+    margin-right: 37px !important;
+    width: 300.4px !important;
+    height: 49.3px !important;
+    border-radius: 40px !important;
+    border: solid 1px #c1c1c1 !important;
+}
+
+.login-form-bottom {
+    position: absolute;
+    bottom: 0px;
+}
+
+.login-form-btn {
+    margin-top: 32px !important;
+    width: 375px;
+    height: 75px;
+    border-radius: 5px;
+    background-color: #969696 !important;
+    border: solid 1px #5f5f5f !important;
+}
+
+.login-form-btn-text {
+    margin-top: 20px;
+    margin-left: 125px;
+    width: 78.1px;
+    height: 27px;
+    font-family: NanumSquareOTFB;
+    font-size: 25px;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+#main-intro-header {
+    width: 300px;
+    height: 78px;
+    margin-bottom: 10rem;
+    font-family: NanumSquareOTFB;
+    font-size: 70px;
+    font-weight: 400;
+    text-align: right;
+    color: #c1c1c1;
+}
+
+#main-intro-body {
+    margin-left: 42px;
+    margin-top: 48px;
+    width: 312px;
+    height: 74px;
+    font-family: NanumSquareOTFR;
+    font-size: 20px;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+    color: #868686;
+}
+
+.main-intro-layer {
+    width: 78px;
+    font-family: YDIYGO130;
+    font-size: 90px;
+    font-weight: 400;
+    text-align: right;
+    color: #969696;
+}
+
+.margin-intro-bar {
+    margin-top: 47px;
+    margin-left: 40px;
+    width: 68px !important;
+    height: 3px !important;
+    border: solid 5px #969696 !important;
+}
+
+.typed-cursor {
+    display: none;
+    opacity: 1;
+    -webkit-animation: blink 0.7s infinite;
+    -moz-animation: blink 0.7s infinite;
+    animation: blink 0.7s infinite;
+}

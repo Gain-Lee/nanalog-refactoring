@@ -9,7 +9,11 @@ public class FrontController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public String page(){
-        System.out.println("####");
         return "main";
+    }
+
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public String login(){
+        return "login";
     }
 }
