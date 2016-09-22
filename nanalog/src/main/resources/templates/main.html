@@ -47,12 +47,7 @@
     </div>
     <div class="main-grid-column ten wide column">
       <div id="diary-view-board" class="ui five column grid">
-        <!--<div class="column">-->
-          <!--<div class="diary-grid-row row ui grid"></div>-->
-        <!--</div>-->
-        <!--<div class="column">-->
-          <!--<div class="diary-grid-row row ui grid"></div>-->
-        <!--</div>-->
+
       </div>
     </div>
     <div>
@@ -151,8 +146,25 @@ Test modal
 <div class="ui modal" id="diary-store-modal">
   <input type="button" id="storeBtn" value="저장"/>
 </div>
-<!-- 여기까지 작성창 -->
+
+<!--
+              *~*~*~*~* HANDLEBAR *~*~*~*~*
+              *~*~*~*~* TEMPLATE  *~*~*~*~*
+-->
+
+<!--
+              =====================
+              =====           =====
+              ===== DIARY     =====
+              ===== TEMPLATE  =====
+              =====           =====
+              =====================
+-->
 <script id="diary-column-template" type="text/x-handlebars-template">
+  <div class="column">
+    <div class="diary-grid-row row ui grid"></div>
+  </div>
+  {{#each this}}
   <div class="column">
     <div class="diary-grid-row row ui grid">
       <div class="diary-card"></div>
@@ -160,10 +172,10 @@ Test modal
       <div class="diary-card">
         {{#if this.pid}}
         <div class='header'>
-          {{title}}
+          {{this.title}}
         </div>
         <div class="description">
-          {{date}}
+          {{this.date}}
         </div>
         <input class="diary-card-date" type="hidden" value="{{this.date}}"/>
         {{else}}
@@ -175,30 +187,15 @@ Test modal
       <div class="diary-card"></div>
     </div>
   </div>
+  {{/each}}
 </script>
 
 <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.2.2/semantic.min.js"></script>
 <script type="text/javascript"
         src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
-<!--
-<script type="text/javascript" src="js/diary/diary.js"></script>
-<script type="text/javascript" src="js/page/page.js"></script>
--->
-<script type="text/javascript" src="js/app.js"></script>
+<script type="text/javascript" src="js/diary/diaryCommon.js"></script>
+<script type="text/javascript" src="js/diary/diaryMonth.js"></script>
+<script type="text/javascript" src="js/diary/diaryWeek.js"></script>
 </body>
-<script type="text/javascript">
-      $(document).ready(function () {
-        testFunction();
-        diaryCardClickEventHandler();
-      });
-
-        $('.ui.sticky')
-          .sticky({
-            context: '#example1'
-          });
-  $("#logo").click(function (e) {
-    location.href = "./mypage.html";
-  });
-</script>
 </html>

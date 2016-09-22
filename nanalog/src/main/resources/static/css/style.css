@@ -12,6 +12,7 @@
     width: 145px;
 }
 .diary-card:first-child {
+    border-top: 0px solid #F6F6F6 !important;
     height: 75px !important;
 }
 .diary-card:last-child {
