@@ -169,6 +169,26 @@ public class DiaryController {
         return responseList;
     }
 
+    @RequestMapping(value = "/preview/test", method = RequestMethod.GET)
+    public List<DiaryPreviewResponse> getDiaryPreviewList(){
+        System.out.println("DiaryPreviewResponse controller");
+        List<DiaryPreviewResponse> responseList = new ArrayList();
+
+        for(int i=1;i<10;i++){
+            DiaryPreviewResponse diaryPreviewResponse = new DiaryPreviewResponse();
+            diaryPreviewResponse.setUid(String.valueOf(i));
+            diaryPreviewResponse.setPid(String.valueOf(i));
+            diaryPreviewResponse.setTitle("DIARY TITLE");
+            diaryPreviewResponse.setBody("DIARY BODY");
+            diaryPreviewResponse.setImageUrl("DIARY URL");
+            diaryPreviewResponse.setDate("2016090"+i);
+
+            responseList.add(diaryPreviewResponse);
+        }
+
+        return responseList;
+    }
+
     @RequestMapping(value = "/image" ,method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
     public byte[] getImage(@RequestParam("filePath") String filePath){
         try {
