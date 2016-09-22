@@ -46,16 +46,13 @@
       </div>
     </div>
     <div class="main-grid-column ten wide column">
-      <div class="ui five column grid">
-        <div class="column">
-          <div class="diary-grid-row row ui grid"></div>
-        </div>
-        <div id="diary-view-board">
-
-        </div>
-        <div class="column">
-          <div class="diary-grid-row row ui grid"></div>
-        </div>
+      <div id="diary-view-board" class="ui five column grid">
+        <!--<div class="column">-->
+          <!--<div class="diary-grid-row row ui grid"></div>-->
+        <!--</div>-->
+        <!--<div class="column">-->
+          <!--<div class="diary-grid-row row ui grid"></div>-->
+        <!--</div>-->
       </div>
     </div>
     <div>
@@ -161,19 +158,22 @@ Test modal
       <div class="diary-card"></div>
       {{#each this}}
       <div class="diary-card">
+        {{#if this.pid}}
         <div class='header'>
           {{title}}
         </div>
         <div class="description">
-          {{body}}
+          {{date}}
         </div>
+        <input class="diary-card-date" type="hidden" value="{{this.date}}"/>
+        {{else}}
+        <div class="plus">+</div>
+        <input class="diary-card-date" type="hidden" value="{{this.date}}"/>
+        {{/if}}
       </div>
       {{/each}}
       <div class="diary-card"></div>
     </div>
-  </div>
-  <div class="column">
-    <div class="diary-grid-row row ui grid"></div>
   </div>
 </script>
 
@@ -185,54 +185,20 @@ Test modal
 <script type="text/javascript" src="js/diary/diary.js"></script>
 <script type="text/javascript" src="js/page/page.js"></script>
 -->
+<script type="text/javascript" src="js/app.js"></script>
+</body>
 <script type="text/javascript">
+      $(document).ready(function () {
+        testFunction();
+        diaryCardClickEventHandler();
+      });
 
-  $(document).ready(function () {
-
-    $.get('/v1/diary/preview/test', {
-    }, function(data) {
-      let source = $("#entry-template").html();
-      let template = Handlebars.compile(source);
-      let column1 = template(data);
-
-      // 1. 1~30 // 배열 4개로 쪼갤거임
-      // 2. 첫번째 리스트 : 1,5,9,13,17,21,25,29
-      //    두번째 리스트 : 2,6,10,14,18,22,26,30
-      //    세번째 리스트 : 3,7,11,15,19,23,27,31
-      //    네번째 리스트 : 4,8,12,16,20,24,28
-
-      let columnList = "";
-      for(let i=0;i<4;i++){
-
-        // data가지고 연산
-        let day = data.date.substring(6,2);
-        if(day % 4){
-
-        }
-        let dataList;
-
-        columnList +=
-      }
-
-      var columnList = column1;
-      columnList += column2;
-      columnList += column3;
-      columnList += column4;
-
-      $("#diary-view-board").html(columnList);
-    });
-
-  });
-
-  $('.ui.sticky')
+        $('.ui.sticky')
           .sticky({
             context: '#example1'
           });
   $("#logo").click(function (e) {
     location.href = "./mypage.html";
   });
-
 </script>
-</body>
-
 </html>

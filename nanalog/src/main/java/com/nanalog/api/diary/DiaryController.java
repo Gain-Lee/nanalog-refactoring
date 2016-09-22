@@ -174,15 +174,45 @@ public class DiaryController {
         System.out.println("DiaryPreviewResponse controller");
         List<DiaryPreviewResponse> responseList = new ArrayList();
 
-        for(int i=1;i<10;i++){
+        for(int i=1;i<33;i++){
             DiaryPreviewResponse diaryPreviewResponse = new DiaryPreviewResponse();
             diaryPreviewResponse.setUid(String.valueOf(i));
             diaryPreviewResponse.setPid(String.valueOf(i));
             diaryPreviewResponse.setTitle("DIARY TITLE");
             diaryPreviewResponse.setBody("DIARY BODY");
             diaryPreviewResponse.setImageUrl("DIARY URL");
-            diaryPreviewResponse.setDate("2016090"+i);
+            if(i<10){
+                diaryPreviewResponse.setDate("2016090"+i);
+            }
+            else{
+                diaryPreviewResponse.setDate("201609"+i);
+            }
+            responseList.add(diaryPreviewResponse);
+        }
 
+        return responseList;
+    }
+
+    @RequestMapping(value = "/yyyymm/test", method = RequestMethod.GET)
+    public List<DiaryPreviewResponse> getDiaryPreviewListByYYYYMM(){
+        List<DiaryPreviewResponse> responseList = new ArrayList();
+
+        for(int i=1;i<33;i++){
+            DiaryPreviewResponse diaryPreviewResponse = new DiaryPreviewResponse();
+            if(i%7 == 0){
+            }
+            else {
+                diaryPreviewResponse.setUid(String.valueOf(i));
+                diaryPreviewResponse.setPid(String.valueOf(i));
+                diaryPreviewResponse.setTitle("DIARY TITLE");
+                diaryPreviewResponse.setBody("DIARY BODY");
+                diaryPreviewResponse.setImageUrl("DIARY URL");
+            }
+            if (i < 10) {
+                diaryPreviewResponse.setDate("2016090" + i);
+            } else {
+                diaryPreviewResponse.setDate("201609" + i);
+            }
             responseList.add(diaryPreviewResponse);
         }
 
