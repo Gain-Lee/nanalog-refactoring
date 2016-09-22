@@ -168,7 +168,7 @@
             $('#diary-store-modal').transition('slide down');
         });
     }
-
+/*
     function storeBtnEvent() {
         $('#storeBtn').click(function() {
             console.log("storeBtn clicked");
@@ -215,6 +215,57 @@
             });
         });
     }
+*/
+
+
+    function storeBtnEvent() {
+        $('#storeBtn').click(function() {
+            console.log("storeBtn clicked");
+            //둘다 up이거나 둘다 down이어야 하는거 같은데..?
+            $('#diary-store-modal').transition('slide down');
+            $('#diary-create-modal').transition('slide up');
+
+            let title = $("#text-header").val();
+            //            let currentDate = (new Date()).yyyymmdd();
+            let sentence = $("#text-body").val();
+            let imageUrl = $("#diaryImageTag").attr('src');
+
+            $.post(serverUrl + 'v1/diary', {
+                uid: uid,
+                date: selectedDay,
+                type: 'TITLE',
+                data: title
+            }, function(result){
+                console.log(result);
+                $.post(serverUrl + 'v1/diary', {
+                uid: uid,
+                date: selectedDay,
+                type: 'SENTENCE',
+                data: sentence
+                }, function(result) {
+                if(imageUrl != null){
+                    $.post(serverUrl + 'v1/diary', {
+                    uid: uid,
+                    date: selectedDay,
+                    type: 'IMAGE',
+                    data: imageUrl
+                    }, function(result){
+                        console.log(result);
+                        monthViewInit();
+                    });
+                }
+                else
+                {
+                    console.log(result);
+                    monthViewInit();
+                }
+
+                });
+            });
+        });
+    }
+
+
 
     function inputTextStyleChange() {
         $('#text-header').focus(function() {
@@ -348,6 +399,75 @@
             $('#diary-view-week-img').attr('src', data[data.length - 1].imageUrl);
         });
     }
+
+
+    //월 선택시에 해당 월 정보 보여줌
+    var monthViewChange = function(currentMonth){
+
+
+        let date = new Date();
+        let yyyy = date.getFullYear().toString();
+        let mm = currentMonth;
+        let dd = getMonthDay(currentMonth);
+
+        let day = getMonthDay(currentMonth) - 1;
+
+        let currentDate = new Date(yyyy, mm, dd);
+
+
+        $.get(serverUrl + '/v1/diary/preview', {
+                    uid: uid,
+                    startDate: calDate(yyyy,mm,dd,day),
+                    endDate: currentDate
+                }, function(data) {
+                    $("#diary-view-board").html(createDiaryMonthTemplate());
+                    diaryCardInit(data);
+                });
+
+    }
+
+
+       var getMonthDay = function(mon) {
+            console.log(mon);
+            switch (mon) {
+                case '01':
+                    return 31;
+                    break;
+                case '02':
+                    return 28;
+                    break;
+                case '03':
+                    return 31;
+                    break;
+                case '04':
+                    return 30;
+                    break;
+                case '05':
+                    return 31;
+                    break;
+                case '06':
+                    return 30;
+                    break;
+                case '07':
+                    return 31;
+                    break;
+                case '08':
+                    return 31;
+                    break;
+                case '09':
+                    return 30;
+                    break;
+                case '10':
+                    return 31;
+                    break;
+                case '11':
+                    return 30;
+                    break;
+                case '12':
+                    return 31;
+                    break;
+            }
+        }
 
     var monthViewInit = function() {
         console.log("month page start");
@@ -597,12 +717,13 @@
 
         return itemHtml;
     };
-    //선택된 월의 스타일 변경 > 근데 왜 두번 할까..?
+
     var changeMonthListClass = function(currentMonth, beforeMonth) {
         $('#month-list-' + currentMonth).toggleClass('month-list month-list-selected');
         $('#month-list-' + currentMonth).html(($('#month-list-' + currentMonth).html()).substring(0, 2));
         $('#month-list-' + beforeMonth).toggleClass('month-list-selected month-list');
         $('#month-list-' + beforeMonth).html(getMonthName($('#month-list-' + beforeMonth).text()));
+        monthViewChange(currentMonth);
     };
 
     var getMonthName = function(mon) {
