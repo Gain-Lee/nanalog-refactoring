@@ -1,6 +1,10 @@
 (function(){
 
+    var uid;
+
     function diaryService (){
+        var locationHash = location.hash;
+        uid = locationHash.substring(1, locationHash.length);
         this.init();
     }
 
@@ -21,7 +25,7 @@
             let diaryCardList = convertDiaryCardList(data, 4);
             createDiaryMonthViewTemplate(diaryCardList);
             addDiaryCardClickEvent();
-        });
+            });
     };
 
     /**
@@ -78,10 +82,32 @@
             for(let i=0;i<childs.length;i++){
                 if(childs[i].className == 'diary-card-date'){
                     console.log(childs[i].value);
+
+                    let date = childs[i].value;
+                    console.log(date);
+
+                    $.get('/v1/diary/preview', {
+                    uid : uid,
+                    startDate: date,
+                    endDate: date
+                    }, function(data){
+                    console.log(data);
+                    createDiaryWritingTemplate(data);
+
+                    });
                 }
             }
         });
     };
+
+    var createDiaryWritingTemplate = function(data){
+         let source = $('#diary-create-Template').html();
+         let template = Handlebars.compile(source);
+         let DiaryWritingTemplate = template(data);
+
+         $('#diary-create-modal').html(DiaryWritingTemplate);
+         $('#diary-create-modal').transition('slide up');
+    }
 
     $( document ).ready(function() {
         let ds = new diaryService();

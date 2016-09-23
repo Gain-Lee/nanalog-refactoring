@@ -169,6 +169,20 @@ public class DiaryController {
         return responseList;
     }
 
+    @RequestMapping(value = "/preview/test2", method = RequestMethod.GET)
+    public DiaryPreviewResponse getDiaryPreviewListTest(){
+
+        DiaryPreviewResponse diaryPreviewResponse = new DiaryPreviewResponse();
+        diaryPreviewResponse.setPid("0001");
+        diaryPreviewResponse.setUid("0001");
+        diaryPreviewResponse.setBody("Diary Body");
+        diaryPreviewResponse.setTitle("Diart Title");
+        diaryPreviewResponse.setImageUrl("Image URL");
+        diaryPreviewResponse.setDate("20160923");
+
+        return diaryPreviewResponse;
+    }
+
     @RequestMapping(value = "/preview/test", method = RequestMethod.GET)
     public List<DiaryPreviewResponse> getDiaryPreviewList(){
         System.out.println("DiaryPreviewResponse controller");

@@ -105,7 +105,14 @@ Test modal
 -->
 
 <!-- 여기 부터 작성창 -->
+
 <div class="ui modal" id="diary-create-modal">
+  작성창
+</div>
+
+
+<script id = "diary-create-Template" type="text/x-handlebars-template">
+
   <div class="textContent">
     <div class="currentTime">
       <div id="current-date"></div>
@@ -115,12 +122,21 @@ Test modal
       <div id="writing-status">writing...</div>
     </div>
 
+    {{#if this.pid}}
+    <div class="text content header">
+      {{this.title}}
+    </div>
+    <div class="text content body">
+      {{this.body}}
+    </div>
+    {{else}}
     <div class="text content header">
       <input type="text" id="text-header" placeholder="오늘 하루"/>
     </div>
     <div class="text content body">
       <textarea id="text-body" placeholder="어떤 것을 남기고 싶나요?" maxlength="1000"></textarea>
     </div>
+    {{/if}}
     <div class="limitedWordCnt">
       <span id="current-word-cnt"></span><span> / 1000</span>
     </div>
@@ -141,7 +157,9 @@ Test modal
       <input type="button" id="completeBtn" value="확인"/>
     </div>
   </div>
-</div>
+
+</script>
+
 
 <div class="ui modal" id="diary-store-modal">
   <input type="button" id="storeBtn" value="저장"/>
