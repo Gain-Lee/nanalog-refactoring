@@ -109,6 +109,7 @@
          $('#diary-create-modal').transition('slide up');
     }
 
+
     $( document ).ready(function() {
         let ds = new diaryService();
     });

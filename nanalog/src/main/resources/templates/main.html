@@ -124,17 +124,17 @@ Test modal
 
     {{#if this.pid}}
     <div class="text content header">
-      {{this.title}}
+      <input class="text-header" type="text" value="{{title}}"/>
     </div>
     <div class="text content body">
-      {{this.body}}
+      <textarea class="text-body" maxlength="1000">{{body}}</textarea>
     </div>
     {{else}}
     <div class="text content header">
-      <input type="text" id="text-header" placeholder="오늘 하루"/>
+      <input type="text" class="text-header" placeholder="오늘 하루"/>
     </div>
     <div class="text content body">
-      <textarea id="text-body" placeholder="어떤 것을 남기고 싶나요?" maxlength="1000"></textarea>
+      <textarea class="text-body" placeholder="어떤 것을 남기고 싶나요?" maxlength="1000"></textarea>
     </div>
     {{/if}}
     <div class="limitedWordCnt">
