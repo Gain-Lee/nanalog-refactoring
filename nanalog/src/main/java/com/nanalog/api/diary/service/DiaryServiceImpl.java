@@ -35,11 +35,12 @@ public class DiaryServiceImpl implements DiaryService {
     ComponentRepository componentRepository;
 
     @Override
-    public Integer createPage(DiaryPageCreateRequest diaryPageCreateRequest) {
+    public Integer createPage(Long pageId, String userId) {
 
-        User user = userRepository.findByUid(diaryPageCreateRequest.getUserId());
-        Page page = pageRepository.findByPageId(diaryPageCreateRequest.getPageId());
-        page.setCreatedDate(diaryPageCreateRequest.getCreatedDate());
+        User user = userRepository.findByUid(userId);
+        Page page = pageRepository.findByPageId(pageId);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        page.setCreatedDate(format.format(new Date()));
 
         // 글을 먼저 쓰고 나중에 로그인을 하게 된다면???? userId는 로그인 user와는 상관이 없나?
         if(user.getUid() != page.getUid()) {
@@ -129,9 +130,9 @@ public class DiaryServiceImpl implements DiaryService {
 
 
     @Override
-    public DiaryPageGetResponse getDiaryPages(DiaryPageGetRequest diaryPageGetRequest) {
+    public DiaryPageGetResponse getDiaryPages(String uid, String date) {
 
-        List<Page> pages = pageRepository.getPagesByUid(diaryPageGetRequest.getUid());
+        List<Page> pages = pageRepository.getPagesByUid(uid);
 
         DiaryPageGetResponseModel diaryPageGetResponseModel = new DiaryPageGetResponseModel();
         DiaryPageGetResponse diaryPageGetResponse = new DiaryPageGetResponse();
@@ -145,16 +146,16 @@ public class DiaryServiceImpl implements DiaryService {
 
             diaryPageGetResponse.getDiaryPageGetResponseModels().add(diaryPageGetResponseModel);
         }
-        diaryPageGetResponse.setUid(diaryPageGetRequest.getUid());
-        diaryPageGetResponse.setDate(diaryPageGetRequest.getDate());
+        diaryPageGetResponse.setUid(uid);
+        diaryPageGetResponse.setDate(date);
 
         return diaryPageGetResponse;
     }
 
     @Override
-    public DiaryComponentGetResponse getDiaryCompoents(DiaryComponentGetRequest diaryComponentGetRequest) {
+    public DiaryComponentGetResponse getDiaryCompoents(String uid, String pageId) {
 
-        List<Component> components = componentRepository.getComponentsByPageId(Long.valueOf(diaryComponentGetRequest.getPageId()));
+        List<Component> components = componentRepository.getComponentsByPageId(Long.valueOf(pageId));
 
         DiaryComponentGetResponseModel diaryComponentGetResponseModel = new DiaryComponentGetResponseModel();
         DiaryComponentGetResponse diaryComponentGetResponse = new DiaryComponentGetResponse();
@@ -170,28 +171,26 @@ public class DiaryServiceImpl implements DiaryService {
 
             diaryComponentGetResponse.getDiaryComponentGetResponseModels().add(diaryComponentGetResponseModel);
         }
-        diaryComponentGetResponse.setUid(diaryComponentGetRequest.getUid());
-        diaryComponentGetResponse.setPageId(Long.valueOf(diaryComponentGetRequest.getPageId()));
+        diaryComponentGetResponse.setUid(uid);
+        diaryComponentGetResponse.setPageId(Long.valueOf(pageId));
 
         return diaryComponentGetResponse;
     }
 
     @Override
-    public List<DiaryPreviewResponse> getDiaryPreviewList(DiaryPreviewRequest diaryPreviewRequest) {
-        String uid = diaryPreviewRequest.getUid();
-        Integer startDate = Integer.valueOf(diaryPreviewRequest.getStartDate());
-        Integer endDate = Integer.valueOf(diaryPreviewRequest.getEndDate());
+    public List<DiaryPreviewResponse> getDiaryPreviewList(String uid, String startDate, String endDate) {
 
         List<Page> pageList = this.pageRepository.findByUid(uid);
 
         List<DiaryPreviewResponse> diaryPreviewResponseList = new ArrayList<>();
         for(Page page : pageList){
+            String uuid = page.getUid();
+            String pid = String.valueOf(page.getPageId());
+            String date = page.getCreatedDate();
+
             Integer pageDate = Integer.valueOf(page.getCreatedDate());
 
-            if(startDate <= pageDate && endDate >= pageDate){
-                String uuid = page.getUid();
-                String pid = String.valueOf(page.getPageId());
-                String date = page.getCreatedDate();
+            if(Integer.valueOf(startDate) <= pageDate && Integer.valueOf(endDate) >= pageDate){
 
                 List<Component> componentList = this.componentRepository.findByPageId(Long.valueOf(pid));
 
@@ -305,10 +304,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public Integer deletePage(DiaryPageDeleteRequest diaryPageDeleteRequest){
-
-        String userId = diaryPageDeleteRequest.getUserId();
-        Long deletePageId = diaryPageDeleteRequest.getDeletePageId();
+    public Integer deletePage(Long deletePageId, String userId){
 
         Page page = this.pageRepository.findByPageId(deletePageId);
 
@@ -332,23 +328,19 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public Integer deleteComponent(ComponentDeleteRequest componentDeleteRequest){
-        String userId = componentDeleteRequest.getUserId();
-        Long deleteComponentId = componentDeleteRequest.getComponentId();
-
-        Component component = componentRepository.getComponentByComponentId(deleteComponentId);
+    public Integer deleteComponent(String userId, Long componentId){
+        Component component = componentRepository.getComponentByComponentId(componentId);
         Page page = this.pageRepository.findByPageId(component.getPageId());
 
         if(userId.equals(page.getUid())){
 
         }
 
-
         if(component == null){
             return -1;
         }
 
-        this.componentRepository.delete(deleteComponentId);
+        this.componentRepository.delete(componentId);
         SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
         page.setModifiedDate(format.format(new Date()));
 
@@ -356,8 +348,7 @@ public class DiaryServiceImpl implements DiaryService {
     }
 
     @Override
-    public Integer deleteUser(DiaryUserDeleteRequest diaryUserDeleteRequest){
-        String uid = diaryUserDeleteRequest.getUid();
+    public Integer deleteUser(String uid){
         List<Page> pageArrayList = this.pageRepository.findByUid(uid);
 
         this.pageRepository.deleteByUid(uid);

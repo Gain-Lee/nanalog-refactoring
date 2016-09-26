@@ -12,18 +12,18 @@ import java.util.List;
  */
 public interface DiaryService {
 
-    Integer createPage(DiaryPageCreateRequest diaryPageCreateRequest);
+    Integer createPage(Long pageId, String userId);
     Integer createComponent(ComponentCreateRequest componentCreateRequest);
     Integer createDiary(DiaryCreateRequest diaryCreateRequest);
 
-    DiaryPageGetResponse getDiaryPages(DiaryPageGetRequest diaryPageGetRequest);
-    DiaryComponentGetResponse getDiaryCompoents(DiaryComponentGetRequest diaryComponentGetRequest);
-    List<DiaryPreviewResponse> getDiaryPreviewList(DiaryPreviewRequest diaryPreviewRequest);
+    DiaryPageGetResponse getDiaryPages(String uid, String date);
+    DiaryComponentGetResponse getDiaryCompoents(String uid, String pageId);
+    List<DiaryPreviewResponse> getDiaryPreviewList(String uid, String startDate, String endDate);
 
     Integer updateDiary(List<DiaryUpdateRequest> diaryUpdateRequest);
     Integer updateComponent(DiaryUpdateRequest diaryUpdateRequest);
 
-    Integer deletePage(DiaryPageDeleteRequest diaryPageDeleteRequest);
-    Integer deleteComponent(ComponentDeleteRequest componentDeleteRequest);
-    Integer deleteUser(DiaryUserDeleteRequest diaryUserDeleteRequest);
+    Integer deletePage(Long deletePageId, String userId);
+    Integer deleteComponent(String userId, Long componentId);
+    Integer deleteUser(String uid);
 }
