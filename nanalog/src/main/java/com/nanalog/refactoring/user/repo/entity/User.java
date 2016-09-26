@@ -5,10 +5,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-/**
- * Created by 1002731 on 2016. 9. 27..
- * Email : eenan@sk.com
- */
 @Entity
 @Table(name = "user_tb")
 public class User {
