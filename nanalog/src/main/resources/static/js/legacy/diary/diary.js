@@ -226,7 +226,6 @@
             $('#diary-create-modal').transition('slide up');
 
             let title = $("#text-header").val();
-            //            let currentDate = (new Date()).yyyymmdd();
             let sentence = $("#text-body").val();
             let imageUrl = $("#diaryImageTag").attr('src');
 

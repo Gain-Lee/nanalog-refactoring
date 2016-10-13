@@ -287,13 +287,18 @@
 
 #addImgBtn {
   width: 250px;
-	height: 250px;
+    height: 250px;
 	border: solid 2px #a39ed1;
   background-color: rgba(0, 0, 0, 0);
   color : #a39ed1;
   font-size: 60px;
   margin-top: 150px;
   margin-left: 100px;
+  display: inline-block;
+}
+
+#fileImg {
+    display : none;
 }
 
 #diaryImageTag {
@@ -327,6 +332,7 @@
   color : #a39ed1;
   margin-left: 15px;
 }
+
 
 #diary-store-modal {
   width: 1200px;

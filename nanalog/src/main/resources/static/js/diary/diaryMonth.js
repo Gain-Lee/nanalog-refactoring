@@ -1,6 +1,9 @@
 (function(){
 
     var uid;
+    const serverUrl = 'http://localhost:8080/';
+    var selectedDate;
+    var selectedMonth;
 
     function diaryService (){
         var locationHash = location.hash;
@@ -11,7 +14,9 @@
     diaryService.prototype = {
         init : function() {
             console.log('~*~*~*~* diaryMonthService init ~*~*~*~*');
-            setDiaryMonthView();
+            let selectedYear = getYear();
+            selectedMonth = getMonth();
+            setDiaryMonthView(selectedYear + selectedMonth + "");
         },
         run : function() {}
     }
@@ -20,13 +25,37 @@
 
         let dateFormat = yyyyMM;
 
-        $.get('/v1/diary/yyyymm/test', {
+        $.get('/v1/diary/preview/test', {
+
         }, function(data) {
             let diaryCardList = convertDiaryCardList(data, 4);
             createDiaryMonthViewTemplate(diaryCardList);
             addDiaryCardClickEvent();
             });
     };
+
+    var monthListClickEvent : function(){
+        $(.month-list row).click(function(e){
+            let classList = e.target.classList;
+            for(i=0 ; i<classList.length ; i++){
+                if(classList[i] = "month-list-selected")
+                return;
+            }
+            let selectedMonthValue = e.target.innerText;
+            changeMonthListClass(selectedMonth, selectedMonthValue);
+            selectedMonth = selectedMonthValue;
+
+            $('#selected-month').html(selectedMonthValue);
+        });
+    }
+
+    var changeMonthListClass = function(beforeMonth, currentMonth) {
+            $('#month-list-' + currentMonth).toggleClass('month-list-selected');
+            $('#month-list-' + currentMonth).html(($('#month-list-' + currentMonth).html()).substring(0, 2));
+            $('#month-list-' + beforeMonth).toggleClass('month-list-selected');
+            $('#month-list-' + beforeMonth).html(getMonthName($('#month-list-' + beforeMonth).text()));
+            monthViewChange(currentMonth);
+        };
 
     /**
      *
@@ -84,12 +113,11 @@
                     console.log(childs[i].value);
 
                     let date = childs[i].value;
+                    selectedDate = childs[i].value;
                     console.log(date);
 
-                    $.get('/v1/diary/preview', {
-                    uid : uid,
-                    startDate: date,
-                    endDate: date
+                    $.get('/v1/diary/preview/test2', {
+
                     }, function(data){
                     console.log(data);
                     createDiaryWritingTemplate(data);
@@ -107,8 +135,75 @@
 
          $('#diary-create-modal').html(DiaryWritingTemplate);
          $('#diary-create-modal').transition('slide up');
+
+         cancelBtnClickEvent();
+         completeBtnClickEvent();
     }
 
+    var cancelBtnClickEvent = function(){
+        $("#cancleBtn").click(function(){
+        $('#diary-create-modal').transition('slide down');
+        });
+    }
+
+    var completeBtnClickEvent = function(){
+        $("#completeBtn").click(function(){
+        console.log("completeBtn clicked");
+        let source = $('#diary-store-Template').html();
+        let DiaryStoreTemplate = Handlebars.compile(source);
+
+        $('#diary-store-modal').html(DiaryStoreTemplate);
+        $('#diary-store-modal').transition('slide up');
+        storeBtnClickEvent();
+
+        })
+    }
+
+    var storeBtnClickEvent = function(){
+    $("#storeBtn").click(function(){
+    console.log("storeBtn clicked");
+    $('#diary-store-modal').transition('slide down');
+    $('#diary-create-modal').transition('slide down');
+
+    let title = $(".text-header").val();
+    let sentence = $(".text-body").val();
+    let imageUrl = $("#diaryImageTag").attr('src');
+
+    $.post(serverUrl + 'v1/diary', {
+                uid: uid,
+                date: selectedDate,
+                type: 'TITLE',
+                data: title
+            }, function(result){
+                console.log(result);
+                $.post(serverUrl + 'v1/diary', {
+                uid: uid,
+                date: selectedDate,
+                type: 'SENTENCE',
+                data: sentence
+                }, function(result) {
+                if(imageUrl != null){
+                    $.post(serverUrl + 'v1/diary', {
+                    uid: uid,
+                    date: selectedDate,
+                    type: 'IMAGE',
+                    data: imageUrl
+                    }, function(result){
+                        console.log(result);
+                        setDiaryMonthView();
+                    });
+                }
+                else
+                {
+                    console.log(result);
+                    setDiaryMonthView();
+                }
+
+                });
+            });
+    });
+
+    }
 
     $( document ).ready(function() {
         let ds = new diaryService();
